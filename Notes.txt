@@ -1,0 +1,29 @@
+AI Usage:
+
+Used GitHub Co-Pilot running "Claude Sonnet 4.5" for the following:
+- Initial project planning and defining folder/modules structure with __init__ files.
+- First draft of every function with comments
+- Analyse raw HTML from Eventbrite to identify tags for exctraction
+- Write system prompts
+- Fix defects
+- Create testing scripts
+- Write README.md file
+
+Outputs were obviously supervised and needed to be iterated to achieve a working state, however, the main challenges which required most of my time were:
+- Improve original data model for the fields I wanted
+- Claude originally tried to use Eventbrite API which has been discontinued, understanding why it was not working and replace by webscrapping
+- Fix all the fields parsing as the data quality of the original extractions was terrible - with help of another instance of Claude analyzing raw HTML
+- Fix how to store location and allow for the Agent to be able to retrieve accurate results with both slug format and just the city - fixed multi-shot prompting to search for city only
+- Added logic to skip duplicates in exctration for both existing records in DB and in the same batch
+- Fixed imports and usage of Agno - original draft was halucinating a lot
+- Fixed patterns to export methods between models - Claude is still lacking to keep the same patterns accross the project with duplicated and unnecessary code being created often
+- Added logic to keep chat history when using Agno - originally it was just working with single message/answer
+- Added tool to Agent to be able to execute autonomous scraping for new cities
+- Fixed how to get details for a given event within the conversation context
+
+Thoughts on things that can be improved:
+- Obviously adding more sources apart from Eventbrite
+- Webscrapping is faulty - Eventbrite discontinued the public search API but still has the Venues API, one idea would be to create a storage of Venue IDs per city and scrape the API by a list of Venue IDs for each city
+- Category search only works with the actual names (e.g prompting the agent "wellness events" does not retieve the "health" category) - implement a vector DB for semantic search
+- Improve web parsing by using an LLM to process the page when the fields are not in expected HTML tags
+- Inside Eventbrite open more pages and scrape those instead of just looking to the dashboard per city
